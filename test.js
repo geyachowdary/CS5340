@@ -47,6 +47,7 @@ function testStrength() {
                     }
 
             }
+            toggleAlertIsCompromised(isCompromised);
             // Display password strength
         });
 
@@ -107,3 +108,13 @@ function setProgressBar(percent, className) {
         td[i].className = className;
     }
 }
+
+function toggleAlertIsCompromised(isCompromised) {
+    alert_div = document.getElementById("compromised-alert");
+    if (isCompromised) {
+        alert_div.style.display = "block";
+    }
+    else {
+        alert_div.style.display ="none";
+    }
+} 
