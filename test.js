@@ -6,6 +6,7 @@ function testStrength() {
     console.log(password);
     password_strength = "";
     setProgressBar(100, "neutral");
+    toggleAlertIsCompromised(false);
     if (password.length < MIN_LENGTH) {
         setStatus("invalid");
     }
