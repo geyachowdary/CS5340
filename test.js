@@ -7,8 +7,10 @@ function testStrength() {
     password_strength = "";
     setProgressBar(100, "neutral");
     toggleAlertIsCompromised(false);
+    toggleinValidAlert(false);
     if (password.length < MIN_LENGTH) {
         setStatus("invalid");
+        toggleinValidAlert(true);        
     }
     else {
         isPasswordCompromised(password).then(isCompromised => {
@@ -118,4 +120,13 @@ function toggleAlertIsCompromised(isCompromised) {
     else {
         alert_div.style.display ="none";
     }
-} 
+}
+function toggleinValidAlert(isInvalid) {
+    alert_div = document.getElementById("invalid-alert");
+    if (isInvalid) {
+        alert_div.style.display = "block";
+    }
+    else {
+        alert_div.style.display ="none";
+    } 
+}
