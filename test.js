@@ -8,13 +8,13 @@ function testStrength() {
     console.log(password);
     password_strength = "";
     hasWord = false;
+    words = [];
     strengths = []
-    console.log("Check word: " + checkWord(password))
     clearStrengthsList();
     setProgressBar(100, "neutral");
     toggleAlertIsCompromised(false, strengths);
     toggleinValidAlert(false);
-    toggleWordAlert(false);
+    toggleWordAlert(false, []);
     if (password.length < MIN_LENGTH) {
         setStatus("invalid");
         toggleinValidAlert(true);        
@@ -39,11 +39,13 @@ function testStrength() {
                 strength += 1;
                 strengths.push("has a special character");
             }
-            if (checkWord(password)) {
+            if (checkWord(password)[0]) {
                 console.log("has word")
                 strength += 1;
                 strengths.push("does not contain a dictionary word");
                 hasWord = true;
+                words = checkWord(password)[1];
+                console.log(words);
             }
             
 
@@ -77,7 +79,7 @@ function testStrength() {
 
             }
             toggleAlertIsCompromised(isCompromised, strengths);
-            toggleWordAlert(hasWord);
+            toggleWordAlert(hasWord, words);
             // Display password strength
         });
 
@@ -164,14 +166,21 @@ function toggleinValidAlert(isInvalid) {
     } 
 }
 
-function toggleWordAlert(hasWord) {
+function toggleWordAlert(hasWord, words) {
     alert_div = document.getElementById("word-alert");
+    list = document.getElementById("password-strengths-list");
     if (hasWord) {
         alert_div.style.display = "block";
+        list.innerHTML = "";
     }
     else {
         alert_div.style.display ="none";
-    } 
+        for (i = 0; i < words.length; i++) {
+            li = document.createElement("li");
+            li.innerHTML = words[i];
+            list.appendChild(li);
+        }
+    }
 }
 function clearStrengthsList() {
     // Clear strengths list
@@ -181,17 +190,22 @@ function clearStrengthsList() {
 
 function checkWord (password) {
     word = "";
+    words = [];
     for (i = 0; i < password.length; i++) {
         if (hasLowerCase(password[i].toLowerCase())) {
             word += password[i].toLowerCase();
             console.log("word: " + word);
             if (dictionary.includes(word)) {
-                return true;
+                words.push(word);
             }
             }
         else {
             continue;
         }
     }
-    return false;
+    if (words.length > 0) {
+        return [false, []]
+    } else {
+        return [true, words];
+    }
 }
