@@ -64,8 +64,8 @@ function setStatus(status) {
     }
     if (status.toLowerCase() == "good") {
         password_strength = "Good";
-        document.getElementById('password-strength').className = "Good";
-        setProgressBar(80, "fair");
+        document.getElementById('password-strength').className = "good";
+        setProgressBar(80, "good");
     }
     if (status.toLowerCase() == "excellent") {
         password_strength = "Excellent";
