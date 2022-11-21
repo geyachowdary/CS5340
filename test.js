@@ -103,7 +103,6 @@ function hasNum(password) {
 function setProgressBar(percent, className) {
     size = (percent / 5)
     td = document.body.getElementsByTagName("td");
-    console.log(td);
     for (i = 0; i < size; i++) {
         td[i].className = className;
     }
