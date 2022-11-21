@@ -79,7 +79,7 @@ function testStrength() {
 
             }
             toggleAlertIsCompromised(isCompromised, strengths);
-            toggleWordAlert(hasWord, words);
+            toggleWordAlert((words.length), words);
             // Display password strength
         });
 
@@ -143,11 +143,14 @@ function setProgressBar(percent, className) {
 
 function toggleAlertIsCompromised(isCompromised, strengths) {
     alert_div = document.getElementById("compromised-alert");
+    password_strengths_div = document.getElementById("password-strengths-divs");
     if (isCompromised) {
         alert_div.style.display = "block";
+        password_strengths_div.style.display = "none";
     }
     else {
         alert_div.style.display ="none";
+        password_strengths_div.style.display = "block";
         list = document.getElementById("password-strengths-list");
         for (i = 0; i < strengths.length; i++) {
             li = document.createElement("li");
@@ -167,19 +170,22 @@ function toggleinValidAlert(isInvalid) {
 }
 
 function toggleWordAlert(hasWord, words) {
+    console.log("words: ")
+    console.log(words)
+    console.log("hasWord: " + hasWord)
     alert_div = document.getElementById("word-alert");
-    list = document.getElementById("password-strengths-list");
+    list = document.getElementById("words-list");
     if (hasWord) {
         alert_div.style.display = "block";
-        list.innerHTML = "";
-    }
-    else {
-        alert_div.style.display ="none";
         for (i = 0; i < words.length; i++) {
             li = document.createElement("li");
             li.innerHTML = words[i];
             list.appendChild(li);
         }
+    }
+    else {
+        alert_div.style.display ="none";
+        list.innerHTML = "";
     }
 }
 function clearStrengthsList() {
