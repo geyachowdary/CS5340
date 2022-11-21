@@ -1,0 +1,53 @@
+.invalid {
+    color: red;
+}
+
+.bad {
+    color: red;
+}
+
+.excellent {
+    color: green;
+}
+
+.good {
+    color: greenyellow;
+}
+
+.fair {
+    color: #EDD01C;
+}
+
+td.invalid {
+    background-color: red;
+}
+
+td.bad {
+    background-color: red;
+}
+
+td.excellent {
+    background-color: green;
+}
+
+td.good {
+    background-color: greenyellow;
+}
+
+td.fair {
+    background-color: #EDD01C;
+}
+
+.neutral {
+    background-color: gray;
+}
+
+td.neutral {
+    background-color: gray;
+}
+
+td {
+    padding-left: 5px;
+    line-height: 50px;
+    overflow: hidden;
+}
