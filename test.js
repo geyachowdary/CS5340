@@ -5,8 +5,10 @@ function testStrength() {
     password = document.getElementById('password').value;
     console.log(password);
     password_strength = "";
+    strengths = []
+    clearStrengthsList();
     setProgressBar(100, "neutral");
-    toggleAlertIsCompromised(false);
+    toggleAlertIsCompromised(false, strengths);
     toggleinValidAlert(false);
     if (password.length < MIN_LENGTH) {
         setStatus("invalid");
@@ -16,10 +18,23 @@ function testStrength() {
         isPasswordCompromised(password).then(isCompromised => {
             console.log('Is compromised?', isCompromised)
             var strength = 0;
-            strength += /[A-Z]+/.test(password) ? 1 : 0;
-            strength += /[a-z]+/.test(password) ? 1 : 0;
-            strength += /[0-9]+/.test(password) ? 1 : 0;
-            strength += /[\W]+/.test(password) ? 1 : 0;
+            if (hasUppercase(password)) {
+                strength += 1;
+                strengths.push("has an uppercase letter");
+            }
+            if (hasLowerCase(password)) {
+                strength += 1;
+                strengths.push("has a lowercase letter");
+            }
+            if (hasNum(password)) {
+                strength += 1;
+                strengths.push("has a number");
+            }
+            if (hasSpecial(password)) {
+                strength += 1;
+                strengths.push("has a special character");
+            }
+            
 
             switch (strength) {
                 case 1:
@@ -50,7 +65,7 @@ function testStrength() {
                     }
 
             }
-            toggleAlertIsCompromised(isCompromised);
+            toggleAlertIsCompromised(isCompromised, strengths);
             // Display password strength
         });
 
@@ -112,13 +127,19 @@ function setProgressBar(percent, className) {
     }
 }
 
-function toggleAlertIsCompromised(isCompromised) {
+function toggleAlertIsCompromised(isCompromised, strengths) {
     alert_div = document.getElementById("compromised-alert");
     if (isCompromised) {
         alert_div.style.display = "block";
     }
     else {
         alert_div.style.display ="none";
+        list = document.getElementById("password-strengths-list");
+        for (i = 0; i < strengths.length; i++) {
+            li = document.createElement("li");
+            li.innerHTML = strengths[i];
+            list.appendChild(li);
+        }
     }
 }
 function toggleinValidAlert(isInvalid) {
@@ -129,4 +150,10 @@ function toggleinValidAlert(isInvalid) {
     else {
         alert_div.style.display ="none";
     } 
+}
+
+function clearStrengthsList() {
+    // Clear strengths list
+    list = document.getElementById("password-strengths-list");
+    list.innerHTML = "";
 }
