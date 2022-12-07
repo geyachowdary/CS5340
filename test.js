@@ -15,49 +15,64 @@ function testStrength() {
     // Get Password
     password = document.getElementById('password').value;
     console.log(password);
+    // Declare variables in preparation for testing
     password_strength = "";
     hasWord = false;
     words = [];
     strengths = []
     clearStrengthsList();
     setProgressBar(100, "neutral");
+    // Clear any alerts
     toggleAlertIsCompromised(false, strengths);
     toggleinValidAlert(false);
     toggleWordAlert(false, []);
+
+    // 1st test: is it too short?
     if (password.length < MIN_LENGTH) {
         setStatus("invalid");
         toggleinValidAlert(true);        
     }
+    // If it is not too short.......
     else {
         isPasswordCompromised(password).then(isCompromised => {
             console.log('Is compromised?', isCompromised)
+            // Use a point a system to assess strength
             var strength = 0;
+            // Test: Has upper case?
             if (hasUppercase(password)) {
                 strength += 1;
                 strengths.push("has an uppercase letter");
             }
+            // Test: Has lower case?
             if (hasLowerCase(password)) {
                 strength += 1;
                 strengths.push("has a lowercase letter");
             }
+            // Test: Has number?
             if (hasNum(password)) {
                 strength += 1;
                 strengths.push("has a number");
             }
+            // Test: Has special character?
             if (hasSpecial(password)) {
                 strength += 1;
                 strengths.push("has a special character");
             }
             if (checkWord(password)[0]) {
-                console.log("has word")
-                strength += 1;
-                strengths.push("does not contain a dictionary word");
-                hasWord = true;
+                // Test: Has dictioanry word?
                 words = checkWord(password)[1];
+                if (words.length == 0) {
+                    strength += 1;
+                    strengths.push("does not contain a dictionary word"); 
+                }
+                else {
+                    hasWord = true;
+                }
                 console.log(words);
             }
             
 
+            // Determine strenght based on the number of points
             switch (strength) {
                 case 1:
                     setStatus("poor");
@@ -87,9 +102,9 @@ function testStrength() {
                     }
 
             }
+            // Toggle on any alerts
             toggleAlertIsCompromised(isCompromised, strengths);
             toggleWordAlert((words.length), words);
-            // Display password strength
         });
 
     }
@@ -97,6 +112,11 @@ function testStrength() {
 
 }
 
+
+/********************************************************
+ * Takes in a string and sets the password strength
+ * and assigns classes according to the string's value
+ ********************************************************/
 function setStatus(status) {
 
     if (status.toLowerCase() == "poor") {
@@ -124,19 +144,33 @@ function setStatus(status) {
 
 }
 
-
+/********************************************************
+ * Regex function to check for any lower case characters
+ * in a string
+ ********************************************************/
 function hasLowerCase(password) {
     return (/[a-z]/.test(password));
 }
 
+/********************************************************
+ * Regex function to check for any upper case characters
+ * in a string
+ ********************************************************/
 function hasUppercase(password) {
     return (/[A-Z]/.test(password));
 }
 
+/********************************************************
+ * Regex function to check for any special characters
+ * in a string
+ ********************************************************/
 function hasSpecial(password) {
     return (/\W|_/g.test(password))
 }
 
+/********************************************************
+ * Regex function to check for any numbers in a string
+ ********************************************************/
 function hasNum(password) {
     return (/\d/.test(password));
 }
@@ -150,6 +184,15 @@ function setProgressBar(percent, className) {
     }
 }
 
+/********************************************************
+ * isCompromised - boolean
+ * strengths - array
+ * 
+ * The function takes in a boolean and toggles an
+ * element's display based on the value. It also sets
+ * the innerHTML of the <div> to the contents of
+ * strengths
+ ********************************************************/
 function toggleAlertIsCompromised(isCompromised, strengths) {
     alert_div = document.getElementById("compromised-alert");
     password_strengths_div = document.getElementById("password-strengths-divs");
@@ -168,6 +211,14 @@ function toggleAlertIsCompromised(isCompromised, strengths) {
         }
     }
 }
+
+
+/********************************************************
+ * isValid - boolean
+ * 
+ * The function takes in a boolean and toggles an
+ * element's display based on the value
+ ********************************************************/
 function toggleinValidAlert(isInvalid) {
     alert_div = document.getElementById("invalid-alert");
     if (isInvalid) {
@@ -178,6 +229,15 @@ function toggleinValidAlert(isInvalid) {
     } 
 }
 
+
+/********************************************************
+ * hasWords - boolean
+ * words - array
+ * 
+ * The function takes in a boolean and toggles an
+ * element's display based on the value. It also sets
+ * the innerHTML of the list to the contents of words
+ ********************************************************/
 function toggleWordAlert(hasWord, words) {
     console.log("words: ")
     console.log(words)
@@ -197,12 +257,15 @@ function toggleWordAlert(hasWord, words) {
         list.innerHTML = "";
     }
 }
+
+// Clears the list
 function clearStrengthsList() {
     // Clear strengths list
     list = document.getElementById("password-strengths-list");
     list.innerHTML = "";
 }
 
+// Check for a word in the password
 function checkWord (password) {
     word = "";
     words = [];
