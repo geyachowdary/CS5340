@@ -24,13 +24,13 @@ function testStrength() {
     setProgressBar(100, "neutral");
     // Clear any alerts
     toggleAlertIsCompromised(false, strengths);
-    toggleinValidAlert(false);
+    toggleInvalidAlert(false);
     toggleWordAlert(false, []);
 
     // 1st test: is it too short?
     if (password.length < MIN_LENGTH) {
         setStatus("invalid");
-        toggleinValidAlert(true);        
+        toggleInvalidAlert(true);        
     }
     // If it is not too short.......
     else {
@@ -219,7 +219,7 @@ function toggleAlertIsCompromised(isCompromised, strengths) {
  * The function takes in a boolean and toggles an
  * element's display based on the value
  ********************************************************/
-function toggleinValidAlert(isInvalid) {
+function toggleInvalidAlert(isInvalid) {
     alert_div = document.getElementById("invalid-alert");
     if (isInvalid) {
         alert_div.style.display = "block";
